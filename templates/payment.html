@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Πληρωμή για {{ track }}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f7f7f7;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        #checkout-button {
+            background-color: #6772e5;
+            color: white;
+            font-size: 16px;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #checkout-button:hover {
+            background-color: #5469d4;
+        }
+    </style>
+</head>
+<body>
+    <h2>Αγορά μαθημάτων για το πεδίο: {{ track }}</h2>
+    <p>Παρακαλώ ολοκληρώστε την πληρωμή για να αποκτήσετε πρόσβαση στα μαθήματα.</p>
+    <button id="checkout-button">Πληρωμή</button>
+
+    <script>
+        const track = "{{ track }}";
+
+        document.getElementById("checkout-button").addEventListener("click", () => {
+            fetch("/create-checkout-session/" + track, {
+                method: "POST",
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Σφάλμα: " + data.error);
+                    return;
+                }
+
+                // ⚠️ Βάλε εδώ το δικό σου Stripe Publishable Key από το dashboard σου
+                const stripe = Stripe("pk_test_51OLAHmBZWTh3SvobyWFImcx7MuMZel8oeVNBBBNATMWKK5aesLoMHVkbTjw93WLjL0zZsZJRpMkKuTkNc116v1BA00rlBSvHeQ");
+
+                return stripe.redirectToCheckout({ sessionId: data.id });
+            })
+            .catch(err => {
+                console.error("Stripe redirect error:", err);
+                alert("Προέκυψε σφάλμα κατά την εκκίνηση της πληρωμής.");
+            });
+        });
+    </script>
+</body>
+</html>

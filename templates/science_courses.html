@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8" />
+    <title>Μαθήματα Θετικών Σπουδών</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #a5d6a7;
+        }
+
+        /* Flash messages */
+        .flash-message {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            max-width: 1300px;
+            margin: 40px auto;
+        }
+
+        .sidebar {
+            width: 370px;
+            background-color: #004d40;
+            padding: 30px 20px;
+            color: white;
+            border-radius: 12px 0 0 12px;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 2px solid #a7ffeb;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-lessons {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .sidebar-lessons li {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .sidebar-lessons li:hover {
+            color: #a7ffeb;
+        }
+
+        main {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #00796b;
+            margin-top: 0;
+            font-size: 32px;
+        }
+
+        p.description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .btn-start {
+            display: inline-block;
+            background-color: #00796b;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            box-shadow: 0 6px 12px rgba(0, 121, 107, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-start:hover {
+            background-color: #004d40;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 20px 40px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            border-top: 1px solid #ddd;
+        }
+
+        .sidebar-lessons li {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.2s;
+            list-style: none;
+        }
+
+        .sidebar-lessons li a {
+            display: block;
+            background-color: #00796b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .sidebar-lessons li a:hover {
+            background-color: #004d40;
+            transform: translateY(-2px);
+        }
+
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                border-radius: 12px 12px 0 0;
+                width: 100%;
+            }
+
+            main {
+                border-radius: 0 0 12px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Μαθήματα Θετικών Σπουδών</h1>
+        <nav>
+            <a href="/home">Αρχική</a>
+            <a href="/profile">Το Προφίλ μου</a>
+            <a href="/logout">Αποσύνδεση</a>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-message">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Μαθήματα</h3>
+            <ul class="sidebar-lessons">
+                <li><a href="/lessons/physics">Φυσική – Θεμελιώδεις Αρχές</a></li>
+                <li><a href="/lessons/math">Μαθηματικά – Ανάλυση και Άλγεβρα</a></li>
+                <li><a href="/lessons/xhmeia">Χημεία – Βασικές Έννοιες</a></li>
+                <li><a href="/lessons/ekthesi">Έκθεση – Βελτίωση Γραπτής Έκφρασης</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <h2>Καλώς ήρθες, {{ username }}!</h2>
+            <p class="description">
+                Εδώ θα βρεις όλα τα μαθήματα για τις Θετικές Επιστήμες. Μελετήστε τα βασικά μαθήματα που θα σε βοηθήσουν να αναπτύξεις τις γνώσεις σου και να πετύχεις τους στόχους σου! Διάλεξε ποιο μάθημα θέλεις να παρακολουθήσεις πρώτα.
+            </p>
+
+            <a href="/science/start" class="btn-start">Ξεκίνα το Μάθημα</a>
+        </main>
+    </div>
+
+    <footer>
+        &copy; 2025 Εκπαιδευτική Πλατφόρμα | Όλα τα δικαιώματα διατηρούνται
+    </footer>
+</body>
+</html>

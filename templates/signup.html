@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background: #2196F3;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="submit"]:hover {
+            background: #1976D2;
+        }
+
+        ul {
+            text-align: left;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        li.valid { color: green; }
+        li.invalid { color: red; }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #1976D2;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+            height: auto;
+            line-height: 1;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 600px) {
+            .form-container {
+                width: 90%;
+                padding: 20px 25px;
+            }
+
+            input, select {
+                padding: 8px;
+                margin-top: 8px;
+            }
+
+            input[type="submit"] {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        {% if message %}
+        <p style="color: {{ 'green' if '✅' in message else 'red' }};">{{ message }}</p>
+        {% endif %}
+
+        <form method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <select name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="number" name="age" placeholder="Age" required min="1">
+
+            <div class="password-container">
+                <input type="password" name="password" id="signup-password" placeholder="Password" required>
+                <button type="button" class="toggle-password" onclick="togglePassword('signup-password', this)">Εμφάνιση</button>
+            </div>
+
+            <ul id="password-rules">
+                <li id="length" class="invalid">At least 8 characters</li>
+                <li id="uppercase" class="invalid">At least 1 uppercase letter</li>
+                <li id="lowercase" class="invalid">At least 1 lowercase letter</li>
+                <li id="number" class="invalid">At least 1 number</li>
+            </ul>
+
+            <input type="submit" value="Sign Up">
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                button.textContent = "Απόκρυψη";
+            } else {
+                input.type = "password";
+                button.textContent = "Εμφάνιση";
+            }
+        }
+
+        const passwordInput = document.getElementById('signup-password');
+        const rules = {
+            length: document.getElementById('length'),
+            uppercase: document.getElementById('uppercase'),
+            lowercase: document.getElementById('lowercase'),
+            number: document.getElementById('number')
+        };
+
+        passwordInput.addEventListener('input', () => {
+            const value = passwordInput.value;
+            rules.length.className = value.length >= 8 ? 'valid' : 'invalid';
+            rules.uppercase.className = /[A-Z]/.test(value) ? 'valid' : 'invalid';
+            rules.lowercase.className = /[a-z]/.test(value) ? 'valid' : 'invalid';
+            rules.number.className = /\d/.test(value) ? 'valid' : 'invalid';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5ff;
+      margin: 0;
+    }
+
+    .navbar {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #2196F3;
+      color: white;
+      padding: 4px 16px;
+      height: 40px;
+      z-index: 1000;
+    }
+
+    .navbar-left .welcome-text {
+      font-size: 18px;
+      font-weight: normal;
+      white-space: nowrap;
+    }
+
+    .navbar-right .menu-button {
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* Κεντραρισμένο logo */
+    .navbar-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .logo {
+      height: 55px;
+      width: 150;
+    }
+
+
+
+
+
+    .announcements {
+      padding: 20px 52px;
+      background-color: #e2f1ff;
+    }
+
+    .announcements h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #5271ff;
+      margin-bottom: 20px;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      overflow: hidden;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .carousel-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 20px;
+      max-width: calc(300px * 4 + 20px * 3);
+      padding: 10px 0;
+      scrollbar-width: none;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card {
+      min-width: 300px;
+      flex: 0 0 auto;
+    }
+
+    .carousel-button {
+      background-color: #e2f1ff;
+      border: none;
+      color: blue;
+      font-size: 40px;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .carousel-button.left {
+      margin-right: 10px;
+    }
+
+    .carousel-button.right {
+      margin-left: 10px;
+    }
+
+    .cards-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card strong {
+      color: #2196F3;
+    }
+
+    .drawer {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #ffffff;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      overflow-x: hidden;
+      transition: width 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      z-index: 9999;
+
+    }
+
+    .drawer.drawer-open {
+      width: 250px;
+    }
+
+    .drawer a {
+      padding: 15px 25px;
+      display: block;
+      font-size: 18px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .drawer a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .drawer-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-links {
+      flex-grow: 1;
+    }
+
+    .logout-link {
+      margin-top: auto;
+    }
+
+    .content {
+      padding: 5px;
+      text-align: center;
+      font-weight: bold; /* ή font-weight: 700; */
+
+    }
+
+    body.drawer-open .right-button {
+      display: none !important;
+    }
+
+    .tracks-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      padding-bottom: 60px;
+    }
+
+    .track-card {
+      all: unset;
+      background-color: #e1e5ff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-weight: bold;
+      color: #2196F3;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      text-align: center;
+      min-width: 180px;
+      min-height: 280px;
+      display: inline-block;
+    }
+
+    .track-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .track-title {
+      font-weight: bold;
+      font-size: 16px;
+      color: #2196F3;
+      margin-bottom: 10px;
+    }
+
+    .subjects-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .subjects-list li {
+      margin: 5px 0;
+    }
+
+    .track-icon {
+      width: 100px;
+      height: 100px;
+      margin: 10px auto 20px;
+    }
+
+    .features {
+      padding: 20px 20px;
+      background-color: #e1e5ff;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .feature-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .feature {
+      background-color: #e2f1ff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 280px;
+      max-width: 100%;
+      margin-bottom: 30px;
+
+    }
+
+    .feature h4 {
+      margin-bottom: 10px;
+      font-size: 17px;
+      color: #2196F3;
+    }
+
+    .feature p {
+      font-size: 10px;
+      color: #555;
+    }
+
+    .testimonials-modern {
+      background-color: #f0f4f8;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 15px;
+
+    }
+
+    .testimonials-modern h2 {
+      font-size: 28px;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .testimonial-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 280px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .testimonial-avatar {
+      background-color: #2196F3;
+      color: white;
+      font-weight: bold;
+      width: 130px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .testimonial-text p {
+      font-style: italic;
+      margin: 0 0 10px 0;
+      color: #555;
+    }
+
+    .testimonial-text h4 {
+      margin: 0;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .site-footer {
+      background-color: #2196F3;
+      color: #f0f0f0;
+      padding: 40px 20px 20px;
+      font-size: 15px;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-section {
+      flex: 1 1 200px;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      margin: 5px 0;
+    }
+
+    .footer-section ul li a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      margin-top: 30px;
+      color: #ffffff;
+    }
+
+
+
+    @media (min-width: 769px) {
+      .navbar {
+        padding: 15px 30px;
+      }
+
+      .menu-button {
+        font-size: 30px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .content h1 {
+        font-size: 36px;
+      }
+
+      .content p {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .drawer.drawer-open {
+        width: 70%;
+      }
+
+      .navbar {
+        background-color: #2196F3;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none; /* για να μη “τραβάει” κλικ */
+      }
+
+
+      .navbar-center h1 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+
+
+      .menu-button {
+        font-size: 30px;
+      }
+
+      .drawer a {
+        font-size: 16px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .content h1 {
+        font-size: 24px;
+      }
+
+      .content p {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .drawer.drawer-open {
+        width: 80%;
+      }
+
+      .drawer a {
+        padding: 10px 20px;
+      }
+
+      .menu-button {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-left">
+      <span class="welcome-text">Καλωσήρθες, {{ username }}!</span>
+    </div>
+
+    <div class="navbar-center">
+      <img src="{{ url_for('static', filename='images/epanelle.png') }}" alt="logo" class="logo">
+    </div>
+
+    <div class="navbar-right">
+      <button class="menu-button" onclick="openDrawer()">☰</button>
+    </div>
+  </div>
+
+ <div class="announcements">
+  <h2>📢 Ανακοινώσεις</h2>
+  <div class="carousel-wrapper">
+    <button class="carousel-button left" onclick="scrollCarousel(-1)">‹</button>
+    <div class="carousel-container" id="carousel">
+      <div class="card"><strong>05/06/2025:</strong><p>Η επόμενη διάλεξη ανεβαίνει την Παρασκευή.</p></div>
+      <div class="card"><strong>03/06/2025:</strong><p>Το quiz του κεφαλαίου 2 είναι διαθέσιμο.</p></div>
+      <div class="card"><strong>01/06/2025:</strong><p>Προστέθηκε νέο υλικό για το μάθημα Αρχές Προγραμματισμού.</p></div>
+      <div class="card"><strong>30/05/2025:</strong><p>Το πρόγραμμα εξετάσεων αναρτήθηκε στην αρχική σελίδα.</p></div>
+      <div class="card"><strong>30/05/2025:</strong><p>Το πρόγραμμα εξετάσεων αναρτήθηκε στην αρχική σελίδα.</p></div>
+
+    </div>
+    <button class="carousel-button right" onclick="scrollCarousel(1)">›</button>
+  </div>
+</div>
+
+
+
+  <div id="drawer" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-links">
+        <a href="#" onclick="closeDrawer()">Close ✕</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+      </div>
+      <a href="/logout" class="logout-link">Log Out</a>
+    </div>
+  </div>
+
+  <div class="content">
+  <h2>Διάλεξε το πεδίο σου⭐</h2>
+
+  <div class="tracks-container">
+    <button class="track-card" onclick="location.href='/track/science'">
+      <div class="track-title">Θετικών Σπουδών</div>
+      <img src="{{ url_for('static', filename='images/science-removebg-preview.png') }}" alt="Θετικών Σπουδών" class="track-icon">
+      <ul class="subjects-list">
+        <li>Φυσική</li>
+        <li>Μαθηματικά</li>
+        <li>Χημεία</li>
+        <li>Έκθεση</li>
+      </ul>
+    </button>
+
+    <button class="track-card" onclick="location.href='/track/health'">
+      <div class="track-title">Υγείας</div>
+      <img src="{{ url_for('static', filename='images/doctor.png') }}" alt="Υγείας" class="track-icon">
+      <ul class="subjects-list">
+        <li>Φυσική</li>
+        <li>Βιολογία</li>
+        <li>Χημεία</li>
+        <li>Έκθεση</li>
+      </ul>
+    </button>
+
+    <button class="track-card" onclick="location.href='/track/economics'">
+      <div class="track-title">Οικονομίας & Πληροφορικής</div>
+      <img src="{{ url_for('static', filename='images/data-removebg-preview.png') }}" alt="Οικονομίας & Πληροφορικής" class="track-icon">
+      <ul class="subjects-list">
+        <li>Μαθηματικά</li>
+        <li>Α.Ο.Θ.</li>
+        <li>Πληροφορική</li>
+        <li>Έκθεση</li>
+      </ul>
+    </button>
+
+    <button class="track-card" onclick="location.href='/track/humanities'">
+      <div class="track-title">Ανθρωπιστικών Σπουδών</div>
+      <img src="{{ url_for('static', filename='images/history-removebg-preview.png') }}" alt="Ανθρωπιστικών Σπουδών" class="track-icon">
+      <ul class="subjects-list">
+        <li>Αρχαία</li>
+        <li>Ιστορία</li>
+        <li>Λατινικά</li>
+        <li>Έκθεση</li>
+      </ul>
+    </button>
+  </div>
+
+
+  <section class="features">
+    <h2>Γιατί να μας επιλέξεις</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h4>1) Βίντεο Μαθήματα</h4>
+        <p>Μάθε με τον δικό σου ρυθμό με εκπαιδευτικά βίντεο.</p>
+      </div>
+      <div class="feature">
+        <h4>2) Quiz αξιολόγησης</h4>
+        <p>Έλεγξε τις γνώσεις σου και προετοιμάσου σωστά.</p>
+      </div>
+      <div class="feature">
+        <h4>3) Προσωπική Πρόοδος</h4>
+        <p>Παρακολούθησε την πρόοδό σου κάθε εβδομάδα.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials-modern">
+    <h2>Τι λένε οι μαθητές μας</h2>
+    <div class="testimonial-cards">
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">ΜΚ</div>
+        <div class="testimonial-text">
+          <p>"Με βοήθησε να καταλάβω δύσκολα θέματα και να οργανωθώ καλύτερα!"</p>
+          <h4>-Μαρία Καραγιάννη</h4>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">ΓΠ</div>
+        <div class="testimonial-text">
+          <p>"Φοβερή πλατφόρμα με quiz και προσωπική πρόοδο. Μου άρεσε πολύ!"</p>
+          <h4>-Γιώργος Παπαδόπουλος</h4>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">ΝΣ</div>
+        <div class="testimonial-text">
+          <p>"Πολύ καλά δομημένα μαθήματα και ευχάριστο περιβάλλον!Με βοηθάει πολυ!"</p>
+          <h4>-Νίκος Σταθόπουλος</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function openDrawer() {
+      document.getElementById("drawer").classList.add("drawer-open");
+      document.body.classList.add("drawer-open");
+    }
+
+    function closeDrawer() {
+      document.getElementById("drawer").classList.remove("drawer-open");
+      document.body.classList.remove("drawer-open");
+    }
+  </script>
+
+  <script>
+    function scrollCarousel(direction) {
+      const container = document.getElementById('carousel');
+      const cardWidth = container.querySelector('.card').offsetWidth + 20; // card width + gap
+      container.scrollBy({
+        left: direction * cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+
+</body>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>panellele</h3>
+      <p>Η πλατφόρμα που σε βοηθά να πετύχεις.</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Σύνδεσμοι</h4>
+      <ul>
+        <li><a href="#">Αρχική</a></li>
+        <li><a href="#">Μαθήματα</a></li>
+        <li><a href="#">Επικοινωνία</a></li>
+        <li><a href="#">Σχετικά</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Επικοινωνία</h4>
+      <p>Email: info@panellele.gr</p>
+      <p>Τηλ: 210 123 4567</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 panellele. All rights reserved.</p>
+  </div>
+</footer>
+
+</html>
