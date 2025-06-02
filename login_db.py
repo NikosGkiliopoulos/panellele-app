@@ -4,10 +4,11 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 import smtplib, certifi
 import uuid
-import time
+import time, os
 import stripe
 from flask import jsonify
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session handling
@@ -260,8 +261,8 @@ def track_access(track_name):
 
     return render_template('payment.html', track=track_name)
 
-
-stripe.api_key ='REMOVEDobaJSNizfOPZEhwyjUbD0vAJSNOQkSUinTEXJAIq4Q1eAYn7BtcH3eaCcbXCz9qThNWXMK1dOE00BxxawiHQ'
+load_dotenv()  # Φορτώνει τις μεταβλητές από το .env αρχείο
+stripe.api_key =os.getenv("STRIPE_TEST_KEY")
 
 @app.route('/payment/<track>', methods=['GET', 'POST']) #,methods=['GET', 'POST'])
 def payment(track):
