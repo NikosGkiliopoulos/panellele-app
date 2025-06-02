@@ -32,7 +32,7 @@ def send_reset_email(to_email, token):
     sender_email = "mpazmpaz21@gmail.com"
     app_password = os.getenv("EMAIL_APP_PASSWORD")
     subject = "Password Reset"
-    body = f"Click here to reset your password: http://localhost:5000/reset-password/{token}"
+    body = f"Click here to reset your password: https://panellele-app-4.onrender.com/reset-password/{token}"
 
     msg = MIMEText(body, "plain")
     msg["Subject"] = subject
