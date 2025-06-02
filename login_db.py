@@ -30,7 +30,7 @@ def is_valid_password(password):
 
 def send_reset_email(to_email, token):
     sender_email = "mpazmpaz21@gmail.com"
-    app_password = "yvusbrrebigyupco"
+    app_password = os.getenv("EMAIL_APP_PASSWORD")
     subject = "Password Reset"
     body = f"Click here to reset your password: http://localhost:5000/reset-password/{token}"
 
@@ -299,7 +299,7 @@ def create_checkout_session(track):
     if 'username' not in session:
         return redirect('/login')
 
-    domain_url = 'http://localhost:5000'  # Ανέβασε σε production αν χρειαστεί
+    domain_url = 'https://panellele-app-4.onrender.com'  # Ανέβασε σε production αν χρειαστεί
 
     # Αντιστοίχιση track -> Stripe Price ID (από το Stripe dashboard σου)
     price_lookup = {
